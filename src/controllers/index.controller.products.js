@@ -1,14 +1,5 @@
-const { request } = require('express');
-const { Pool } = require('pg');
+const  pool = require('../../database/database');
 
-const pool = new Pool({
-    host: 'localhost',
-    user: 'postgres',
-    password: 'postgres',
-    database: 'api_tienda_db',
-    port: '5432'
-})
-// Products Methods
 const getProducts = async (req, res) => {
     const response = await pool.query('SELECT * from products');
     res.status(200).json(response.rows);
@@ -26,7 +17,6 @@ const createProducts = async (req, res) => {
     const response = await pool.query('INSERT INTO products (id, name, price, description)' +
                                         'VALUES ($1, $2, $3, $4)',
                                         [id, name, price, description]);
-    console.log(response)
     res.json({
         message: "Product created succesfully",
         body: {
